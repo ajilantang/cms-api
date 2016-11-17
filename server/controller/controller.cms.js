@@ -25,7 +25,7 @@ let readAll = (req, res) => {
 
 let readByDate = (req,res) => {
 
-  Cms.findOne({DateSchema:req.params.DateSchema}, (err,cms) => {
+  Cms.find({DateSchema:req.params.DateSchema}, (err,cms) => {
     if (err) {
       res.status(404).json({message:"there is no data"})
     }else {
@@ -37,7 +37,7 @@ let readByDate = (req,res) => {
 
 let readByLetter = (req,res) => {
 
-  Cms.findOne({letter:req.params.letter}, (err,cms) => {
+  Cms.find({letter:req.params.letter}, (err,cms) => {
     if (err) {
       res.status(404).json({message:"there is no data"})
     }else {

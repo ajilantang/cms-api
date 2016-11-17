@@ -8,14 +8,14 @@ var app = new Vue({
 
     //user data
 
-    email                :  '',
+    username                :  '',
     token                :  '',
     letter               :  '',
     password             :  '',
 
     //session client
 
-    session_email       : '',
+    session_username       : '',
     session_letter      : '',
     session_frequency   : ''
 
@@ -23,7 +23,7 @@ var app = new Vue({
 
   methods : {
     login: function() {
-      axios.post('http://localhost:3000/user/login', {
+      axios.post('http://localhost:3000/users/login', {
         username: app.username,
         password: app.password
       })
@@ -31,7 +31,7 @@ var app = new Vue({
         if (response.data.username != undefined) {
           localStorage.setItem('authenticated', true)
           localStorage.setItem('token', response.data.token)
-          localStorage.setItem('session_email', response.data.username)
+          localStorage.setItem('session_username', response.data.username)
           app.checkAuth()
           app.clearModel()
         }
@@ -42,15 +42,16 @@ var app = new Vue({
     },
     logout: function() {
       localStorage.removeItem('token')
-      localStorage.removeItem('session_email')
+      localStorage.removeItem('session_username')
       localStorage.removeItem('authenticated')
 
       app.authenticated = false;
-      app.session_email = '';
+      app.session_username = '';
       app.token = '';
+      app.clearModel()
     },
     register: function() {
-      axios.post('http://localhost:3000/user/register',{
+      axios.post('http://localhost:3000/users/register',{
         username: app.username,
         password: app.password
       })
@@ -65,14 +66,14 @@ var app = new Vue({
 
       app.authenticated = localStorage.getItem('authenticated')
       app.token = localStorage.getItem('token')
-      app.ses_username = localStorage.getItem('session_email')
+      app.ses_username = localStorage.getItem('session_username')
 
     },
     clearModel: function(){
       app.name = '';
       app.username = '';
       app.letter = '';
-      app.email = '';
+      app.username = '';
       app.password = '';
     }
   }

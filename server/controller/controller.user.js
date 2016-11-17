@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express');
+const mongoose = require('mongoose');
 const Users = require('../models/models.user');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -25,24 +26,27 @@ let showUser = (req,res) => {
 // registration ====
 //=================
 
+
 let registration = (req,res,next) => {
-console.log(req.body.email);
-  Users.register({
-    email : req.body.email,
-  }, req.body.password , (err, user) => {
-    if (err) {
-      console.log("err");
-      res.send({message: "your registration was failed"})
-    } else {
-      passport.authenticate('local')(req ,res , () => {
-        res.status(200).json(user)
-      })
-    }
-  })
+
+    Users.register(new Users({ username : req.body.username }), req.body.password, (err, user) => {
+        if (err) {
+          return res.json({ error : err.message });
+        }
+
+        passport.authenticate('local')(req, res, () => {
+          if (err) {
+            res.status(404)
+          }else {
+            res.json(user)
+          };
+        });
+    });
 
 }
 
 //==============
+
 // login ======
 //===========
 
@@ -50,14 +54,14 @@ let logIn = (req, res, next) => {
 
   passport.authenticate('local', {} , (err,user) => {
     if (err) {
-      res.json({message:"your email or password enter false"})
+      res.json({message:"your username or password enter false"})
     }else {
       const token = jwt.sign({
-        email:user.email
+        username:user.username
       }, 'ajilantang' , { expiresIn : 60*60 })
       res.json({
         _id   : user._id,
-        email : user.email,
+        username : user.username,
         token : token
       })
     }
@@ -66,7 +70,7 @@ let logIn = (req, res, next) => {
 }
 
 module.exports = {
-
+  // cobaRegist    : cobaRegist,
   registration  : registration,
   logIn         : logIn,
   showUser      : showUser
