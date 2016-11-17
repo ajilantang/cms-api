@@ -29,7 +29,7 @@ let registration = (req,res,next) => {
 console.log(req.body.email);
   Users.register({
     email : req.body.email,
-  }, req.body.password ,(err, user) => {
+  }, req.body.password , (err, user) => {
     if (err) {
       console.log("err");
       res.send({message: "your registration was failed"})
@@ -47,7 +47,7 @@ console.log(req.body.email);
 //===========
 
 let logIn = (req, res, next) => {
-  
+
   passport.authenticate('local', {} , (err,user) => {
     if (err) {
       res.json({message:"your email or password enter false"})

@@ -14,15 +14,18 @@ const cors = require('cors');
 const routes = require('./routes/index');
 
 const app = express();
-//======================
-// login routesuser  ===
-//=====================
-const cms = require('./routes/cms');
-const Users = require('./models/models.user');
-const users = require('./routes/users');// authenticate
-app.use('/', routes);
-app.use('/cms',cms)
-app.use('/users', users);
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(favicon());
+app.use(cors())
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 /*
 using jwt
@@ -52,17 +55,6 @@ app.use(jwt({
   }
 }));
 
-//LocalStrategy
-
-passport.use(new LocalStrategy(Users.authenticate()))
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.serializeUser(Users.serializeUser());
-passport.deserializeUser(Users.deserializeUser());
-
-
-
 //==============
 // mongoose ===
 //============
@@ -74,21 +66,33 @@ mongoose global promise
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/myDatabase')
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(favicon());
-app.use(cors())
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+mongoose.connect('mongodb://127.0.0.1/database', (err) => {
+  if(err) {
+    console.log(err)
+  }else{
+   console.log('database connected')
+  }
+})
 
 
+
+//======================
+// login routesuser  ===
+//=====================
+const cms = require('./routes/cms');
+const Users = require('./models/models.user');
+const users = require('./routes/users');// authenticate
+app.use('/', routes);
+app.use('/cms',cms)
+app.use('/users', users);
+//LocalStrategy
+
+passport.use(new LocalStrategy(Users.authenticate()))
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(Users.serializeUser());
+passport.deserializeUser(Users.deserializeUser());
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

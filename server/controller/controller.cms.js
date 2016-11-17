@@ -53,6 +53,7 @@ let readByLetter = (req,res) => {
   */
 
   let createData = (req,res) => {
+    console.log("masukk");
     console.log(req.body);
     Cms.create({
       letter      : req.body.letter,
@@ -74,7 +75,11 @@ let readByLetter = (req,res) => {
   */
 
   let updateData = (req,res) => {
-    Cms.findByIdAndUpdate(req.params.id , req.body ,(err,cms) => {
+    Cms.findByIdAndUpdate(req.params.id , {
+      letter      : req.body.letter,
+      frequency   : req.body.frequency,
+      DateSchema  : new Date()
+    },(err,cms) => {
         if (err) {
           res.status(404).json({message:"failed to update"})
         }else {
