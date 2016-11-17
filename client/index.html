@@ -24,23 +24,27 @@
               <!-- Collect the nav links, forms, and other content for toggling -->
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                      <li>
+                      <li v-if='authenticated'>
                           <a href="#Data">Data</a>
                       </li>
-                      <li>
+                      <li v-if='authenticated'>
                           <a href="#DataDate">Data Date</a>
                       </li>
 
-                        <li v-if='!authenticated'>
-                            <a href="#SignIn">Sign in</a>
+                        <li v-if='!authenticated'  name="authBtn" data-target="#authModal" data-toggle="modal">
+                            <a href="#">Sign in/up</a>
                         </li>
-                        <li v-if='!authenticated'>
-                            <a href="#SignUp">Sign up</a>
-                        </li>
-                        <li  v-if='authenticated'>
+
+                        <li  v-if='authenticated' v-on:click="logout">
                             <a href="#SignOut">Sign out</a>
                         </li>
                   </ul>
+              </div>
+              <div class="navbar-form navbar-right">
+                <div v-if='authenticated' class="form-group">
+                  <button type="button" class="btn btn-info" v-on:click="logout"><i class="glyphicon glyphicon-off"></i> Log Out</button>
+                </div>
+
               </div>
               <!-- /.navbar-collapse -->
           </div>
@@ -55,6 +59,50 @@
 					<input type="text" name="pass" placeholder="frequency">
       </div>
 
+        <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Sign Up / Sign In</h4>
+              </div>
+              <div class="modal-body">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#signup" data-toggle="tab">Sign Up</a></li>
+                  <li><a href="#signin" data-toggle="tab">Sign In</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <div class="tab-pane fade active in" id="signup">
+                    <div class="form-group" style="padding-left:0px">
+                      <label class="control-label" for="email">Email</label>
+                      <input class="form-control" v-model="email" type="emailRegister" placeholder="Enter the email" required>
+                    </div>
+                    <div class="form-group" style="padding-left:0px">
+                      <label class="control-label" for="password">Password</label>
+                      <input class="form-control" v-model="password" type="password" placeholder="Enter the password" required>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" name="button" class="btn btn-info" v-on:click="register" data-dismiss="modal">Sign Up <i class="glyphicon glyphicon-log-in"></i></button>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="signin">
+                    <div class="form-group col-md-6" style="padding-left:0px">
+                      <label class="control-label" for="username">Username</label>
+                      <input class="form-control" v-model="username" type="text" placeholder="Enter the your username" required>
+                    </div>
+                    <div class="form-group col-md-6" style="padding-left:0px">
+                      <label class="control-label" for="password">Password</label>
+                      <input class="form-control" v-model="password" type="password" placeholder="Enter the password" required>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" name="button" class="btn btn-info" v-on:click="login" data-dismiss="modal">Sign In <i class="glyphicon glyphicon-log-in"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/vue@2.0.5/dist/vue.js" charset="utf-8"></script>

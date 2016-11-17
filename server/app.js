@@ -73,13 +73,7 @@ mongoose global promise
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1/databasecms', (err) => {
-  if(err) {
-    console.log(err)
-  }else{
-   console.log('databasecms connected')
-  }
-})
+mongoose.connect('mongodb://localhost/myDatabase')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
