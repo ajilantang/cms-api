@@ -12,8 +12,8 @@ GET users login and registration.
 
 router.get('/', User.showUser)
 
-router.post('/register',User.registration)
+router.post('/register', User.registration)
 
-router.post('/login', passport.authenticate('local'), User.logIn)
+router.post('/login', User.logIn)
 
 module.exports = router;
