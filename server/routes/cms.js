@@ -11,3 +11,5 @@ router.get('/' , Cms.readAll )
 router.post('/' , Cms.createData )
 router.put('/:id', Cms.updateData)
 router.delete('/:id' , Cms.deleteData)
+
+module.exports = router

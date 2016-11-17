@@ -17,10 +17,11 @@ const app = express();
 //======================
 // login routesuser  ===
 //=====================
-
+const cms = require('./routes/cms');
 const Users = require('./models/models.user');
 const users = require('./routes/users');// authenticate
 app.use('/', routes);
+app.use('/cms',cms)
 app.use('/users', users);
 
 /*

@@ -46,16 +46,17 @@ let readByLetter = (req,res) => {
 
   })
 
+}
   /*
   create data
 
   */
 
   let createData = (req,res) => {
-
+    console.log(req.body);
     Cms.create({
-      letter      : String,
-      frequency   : Number,
+      letter      : req.body.letter,
+      frequency   : req.body.frequency,
       DateSchema  : new Date()
     }, (err, cms) => {
       if (err) {
@@ -86,7 +87,7 @@ let readByLetter = (req,res) => {
 delete data
 */
 
-let deleteData = (req,res) =>. {
+let deleteData = (req,res) => {
 
   Cms.findByIdAndRemove( req.params.id,(err,cms) => {
     if (err) {
